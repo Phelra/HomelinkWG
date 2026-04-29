@@ -1,0 +1,83 @@
+# Environment & Config
+.env
+.env.local
+.env.*.local
+config.json
+!config.json.example
+
+# VPN Configuration (NEVER commit - contains private keys)
+yourconfwg/*
+!yourconfwg/.gitkeep
+!yourconfwg/README.md
+*.ovpn
+*.conf
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE / tooling
+.vscode/
+.idea/
+.claude/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Logs
+*.log
+*.jsonl
+homelinkwg-*.log*
+health-check.log
+
+# Database
+*.db
+*.sqlite
+*.sqlite3
+
+# Docker
+.docker/
+docker-compose.override.yml
+
+# Temporary files
+.test_write
+*.tmp
+tmp/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Credentials and secrets (just in case)
+**/credentials.json
+**/secrets.json
+**/*_secret*
+**/*_key

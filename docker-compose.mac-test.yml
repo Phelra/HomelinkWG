@@ -1,0 +1,37 @@
+###############################################################################
+# HomelinkWG - local Docker Desktop smoke test
+#
+# This profile is for macOS/Windows Docker Desktop only. It starts the dashboard
+# and supervisord without requiring /dev/net/tun, NET_ADMIN, or WireGuard.
+# Use docker-compose.yml on the real Linux host for the full VPN + forwards test.
+###############################################################################
+services:
+  homelinkwg:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: homelinkwg:local-test
+    container_name: homelinkwg-test
+    restart: "no"
+    ports:
+      - "${DASHBOARD_PORT:-5555}:${DASHBOARD_PORT:-5555}"
+    volumes:
+      - ./config.json:/app/config.source.json:ro
+      - homelinkwg_test_data:/app/data
+    environment:
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-changeme-local-only}
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-}
+      DASHBOARD_PORT: ${DASHBOARD_PORT:-5555}
+      DASHBOARD_HOST: ${DASHBOARD_HOST:-0.0.0.0}
+      WG_INTERFACE: ${WG_INTERFACE:-wg0}
+      WG_CONFIG_FILE: /etc/wireguard/${WG_INTERFACE:-wg0}.conf
+      ANALYTICS_ENABLED: ${ANALYTICS_ENABLED:-true}
+      TZ: ${TZ:-Europe/Paris}
+      LIGHT_MODE: ${LIGHT_MODE:-true}
+      ULTRA_LIGHT: ${ULTRA_LIGHT:-false}
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+      HomelinkWG_RUNTIME: docker
+
+volumes:
+  homelinkwg_test_data:
+    driver: local

@@ -1,0 +1,134 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 620" font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif">
+  <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#0f172a"/>
+      <stop offset="100%" stop-color="#1e293b"/>
+    </linearGradient>
+    <linearGradient id="userBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#3b82f6"/>
+      <stop offset="100%" stop-color="#1d4ed8"/>
+    </linearGradient>
+    <linearGradient id="hostBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#10b981"/>
+      <stop offset="100%" stop-color="#047857"/>
+    </linearGradient>
+    <linearGradient id="lanBox" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f59e0b"/>
+      <stop offset="100%" stop-color="#b45309"/>
+    </linearGradient>
+    <linearGradient id="vpnGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#a78bfa"/>
+      <stop offset="100%" stop-color="#7c3aed"/>
+    </linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#cbd5e1"/>
+    </marker>
+    <marker id="arrowVpn" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M0,0 L10,5 L0,10 z" fill="#a78bfa"/>
+    </marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur in="SourceAlpha" stdDeviation="4"/>
+      <feOffset dx="0" dy="4" result="off"/>
+      <feFlood flood-color="#000" flood-opacity="0.35"/>
+      <feComposite in2="off" operator="in"/>
+      <feMerge><feMergeNode/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="620" fill="url(#bgGrad)"/>
+
+  <!-- ==================== USER (left) ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="60" y="170" width="220" height="220" rx="16" fill="url(#userBox)"/>
+    <text x="170" y="215" text-anchor="middle" font-size="48">💻</text>
+    <text x="170" y="265" text-anchor="middle" font-size="20" font-weight="600" fill="#fff">You</text>
+    <text x="170" y="295" text-anchor="middle" font-size="13" fill="#dbeafe">Browser / app</text>
+    <text x="170" y="330" text-anchor="middle" font-size="12" fill="#bfdbfe">localhost:8096</text>
+    <text x="170" y="350" text-anchor="middle" font-size="12" fill="#bfdbfe">localhost:5555</text>
+    <text x="170" y="370" text-anchor="middle" font-size="12" fill="#bfdbfe">…</text>
+  </g>
+
+  <!-- ==================== HomelinkWG HOST (center) ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="380" y="90" width="440" height="430" rx="20" fill="url(#hostBox)"/>
+    <text x="600" y="130" text-anchor="middle" font-size="44">📦</text>
+    <text x="600" y="165" text-anchor="middle" font-size="20" font-weight="700" fill="#fff">HomelinkWG Host</text>
+    <text x="600" y="188" text-anchor="middle" font-size="13" fill="#d1fae5">systemd  ·  or  ·  Docker container</text>
+
+    <!-- Inner: dashboard -->
+    <g>
+      <rect x="410" y="215" width="180" height="80" rx="10" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
+      <text x="500" y="242" text-anchor="middle" font-size="22">📊</text>
+      <text x="500" y="268" text-anchor="middle" font-size="14" font-weight="600" fill="#a7f3d0">Flask Dashboard</text>
+      <text x="500" y="286" text-anchor="middle" font-size="11" fill="#6ee7b7">port 5555 · auth · TOTP</text>
+    </g>
+
+    <!-- Inner: socat workers -->
+    <g>
+      <rect x="610" y="215" width="180" height="80" rx="10" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
+      <text x="700" y="242" text-anchor="middle" font-size="22">🔁</text>
+      <text x="700" y="268" text-anchor="middle" font-size="14" font-weight="600" fill="#a7f3d0">socat workers</text>
+      <text x="700" y="286" text-anchor="middle" font-size="11" fill="#6ee7b7">one per port forward</text>
+    </g>
+
+    <!-- Inner: WireGuard -->
+    <g>
+      <rect x="410" y="315" width="380" height="80" rx="10" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
+      <text x="600" y="342" text-anchor="middle" font-size="22">🔐</text>
+      <text x="600" y="368" text-anchor="middle" font-size="14" font-weight="600" fill="#a7f3d0">WireGuard tunnel (wg0)</text>
+      <text x="600" y="386" text-anchor="middle" font-size="11" fill="#6ee7b7">routes only AllowedIPs through the VPN</text>
+    </g>
+
+    <!-- Inner: SQLite analytics -->
+    <g>
+      <rect x="410" y="415" width="380" height="70" rx="10" fill="#064e3b" stroke="#34d399" stroke-width="1.5"/>
+      <text x="600" y="442" text-anchor="middle" font-size="20">📈</text>
+      <text x="600" y="465" text-anchor="middle" font-size="13" font-weight="600" fill="#a7f3d0">SQLite analytics</text>
+      <text x="600" y="481" text-anchor="middle" font-size="11" fill="#6ee7b7">latency · uptime % · incidents</text>
+    </g>
+  </g>
+
+  <!-- ==================== REMOTE LAN (right) ==================== -->
+  <g filter="url(#shadow)">
+    <rect x="920" y="130" width="220" height="320" rx="16" fill="url(#lanBox)"/>
+    <text x="1030" y="170" text-anchor="middle" font-size="36">🏠</text>
+    <text x="1030" y="200" text-anchor="middle" font-size="18" font-weight="700" fill="#fff">Remote LAN</text>
+    <text x="1030" y="220" text-anchor="middle" font-size="11" fill="#fde68a">behind VPN · 192.168.X.0/24</text>
+
+    <rect x="945" y="240" width="170" height="42" rx="8" fill="#78350f" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="1030" y="268" text-anchor="middle" font-size="13" fill="#fde68a">🎬 Jellyfin · :8096</text>
+
+    <rect x="945" y="292" width="170" height="42" rx="8" fill="#78350f" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="1030" y="320" text-anchor="middle" font-size="13" fill="#fde68a">💾 NAS · :445</text>
+
+    <rect x="945" y="344" width="170" height="42" rx="8" fill="#78350f" stroke="#fbbf24" stroke-width="1.5"/>
+    <text x="1030" y="372" text-anchor="middle" font-size="13" fill="#fde68a">⚙️ Other services</text>
+
+    <text x="1030" y="420" text-anchor="middle" font-size="11" fill="#fde68a">…anything reachable</text>
+    <text x="1030" y="435" text-anchor="middle" font-size="11" fill="#fde68a">on the remote network</text>
+  </g>
+
+  <!-- ==================== ARROWS ==================== -->
+  <!-- User → Host (TCP) -->
+  <line x1="282" y1="280" x2="375" y2="280" stroke="#cbd5e1" stroke-width="3" marker-end="url(#arrow)"/>
+  <text x="328" y="265" text-anchor="middle" font-size="11" fill="#cbd5e1" font-weight="600">TCP</text>
+  <text x="328" y="302" text-anchor="middle" font-size="10" fill="#94a3b8">localhost</text>
+
+  <!-- Host → Remote LAN (VPN tunnel) -->
+  <path d="M 825 355 Q 870 355 875 310 L 915 290" stroke="url(#vpnGrad)" stroke-width="5" fill="none" stroke-dasharray="10 6" marker-end="url(#arrowVpn)"/>
+  <rect x="830" y="220" width="90" height="34" rx="8" fill="#1e1b4b" stroke="#a78bfa" stroke-width="1.5"/>
+  <text x="875" y="242" text-anchor="middle" font-size="12" font-weight="600" fill="#c4b5fd">🔒 VPN</text>
+
+  <!-- ==================== Bottom legend ==================== -->
+  <g transform="translate(60, 540)">
+    <rect width="1080" height="60" rx="12" fill="#0b1220" stroke="#334155" stroke-width="1"/>
+    <text x="540" y="38" text-anchor="middle" font-size="12" fill="#cbd5e1">
+      ① You hit <tspan fill="#60a5fa" font-weight="600">localhost:&lt;port&gt;</tspan>
+      → ② <tspan fill="#34d399" font-weight="600">socat</tspan> picks it up
+      → ③ Routed via <tspan fill="#a78bfa" font-weight="600">WireGuard</tspan>
+      → ④ Reaches the remote service
+      → ⑤ Dashboard tracks latency &amp; incidents
+    </text>
+  </g>
+</svg>

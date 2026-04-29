@@ -1,0 +1,24 @@
+{
+  "ports": [
+    {
+      "local_port": 8096,
+      "remote_host": "YOUR_INTERNAL_IP_ADDRESS",
+      "remote_port": 8096,
+      "name": "Jellyfin",
+      "description": "Media server"
+    }
+  ],
+  "dashboard": {
+    "port": 5555,
+    "bind_address": "0.0.0.0",
+    "light_mode": true,
+    "ultra_light": true
+  },
+  "vpn": {
+    "interface": "wg0",
+    "config_file": "yourconfwg/wg0.conf"
+  },
+  "analytics": {
+    "enabled": true
+  }
+}

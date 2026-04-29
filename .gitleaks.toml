@@ -1,0 +1,28 @@
+# HomelinkWG Gitleaks Configuration
+# Detects and prevents committing secrets (API keys, passwords, tokens, etc.)
+
+[source]
+include-paths = []
+exclude-paths = [
+    ".git/",
+    ".github/",
+    "yourconfwg/",
+    "\.DS_Store",
+    "\.log$",
+    "\.jsonl$",
+]
+
+# Exclude patterns for false positives
+exclude-patterns = [
+    "YOUR_INTERNAL_IP_ADDRESS",  # Placeholder in config example
+    "monmotdepasse",              # Placeholder in .env.example
+    "xxxxxxxxxxxx",               # Generic placeholder
+]
+
+[allowlist]
+# Regexes or paths that are allowed to contain secrets
+commits = []
+paths = []
+
+# Specific secret patterns to detect (gitleaks rules are built-in)
+# This config file mainly excludes false positives and configures behavior

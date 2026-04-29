@@ -1,0 +1,100 @@
+###############################################################################
+# HomelinkWG - docker-compose.yml
+#
+# Quickstart:
+#   1. cp .env.example .env  && edit .env
+#   2. docker compose up -d
+###############################################################################
+services:
+  homelinkwg:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: homelinkwg:latest
+    container_name: homelinkwg
+    restart: unless-stopped
+
+    # ── WireGuard kernel requirements ────────────────────────────────────────
+    # NET_ADMIN  : create/manage network interfaces (wg-quick)
+    # SYS_MODULE : load kernel modules if wireguard is not already loaded
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
+    sysctls:
+      net.ipv4.ip_forward: "1"
+      net.ipv6.conf.all.forwarding: "1"
+    devices:
+      - /dev/net/tun:/dev/net/tun
+
+    # ── Ports ────────────────────────────────────────────────────────────────
+    # Dashboard UI — change host-side port if 5555 is already taken
+    ports:
+      - "${DASHBOARD_PORT:-5555}:${DASHBOARD_PORT:-5555}"
+      # Port forwards (socat) are handled *inside* the container network.
+      # Expose them here if you need them accessible from the host, e.g.:
+      # - "8096:8096"
+
+    # ── Volumes ──────────────────────────────────────────────────────────────
+    volumes:
+      # [OBLIGATOIRE] Fichier de configuration principal
+      - ./config.json:/app/config.source.json:ro
+
+      # [OBLIGATOIRE] Config WireGuard — pointez vers votre fichier .conf
+      # Exemple : ${HOME}/wireguard/wg0.conf:/etc/wireguard/wg0.conf:ro
+      - ${WG_CONFIG_FILE:-./yourconfwg/wg0.conf}:/etc/wireguard/${WG_INTERFACE:-wg0}.conf:ro
+
+      # [RECOMMANDÉ] Persistance de la base SQLite (analytics)
+      - homelinkwg_data:/app/data
+
+    # ── Environment variables ─────────────────────────────────────────────────
+    environment:
+      # ┌─────────────────────────────────────────────────────────────────────┐
+      # │  OBLIGATOIRES                                                       │
+      # └─────────────────────────────────────────────────────────────────────┘
+
+      # Mot de passe admin — choisir une des deux options :
+
+      # Option 1 (simple) : mot de passe en clair, hashé automatiquement au démarrage
+      ADMIN_PASSWORD: ${ADMIN_PASSWORD:-}
+
+      # Option 2 (avancé) : hash bcrypt pré-généré
+      ADMIN_PASSWORD_HASH: ${ADMIN_PASSWORD_HASH:-}
+
+      # ┌─────────────────────────────────────────────────────────────────────┐
+      # │  OPTIONNELS                                                         │
+      # └─────────────────────────────────────────────────────────────────────┘
+
+      # Port d'écoute du dashboard Flask (défaut: 5555)
+      DASHBOARD_PORT: ${DASHBOARD_PORT:-5555}
+
+      # Adresse de bind du dashboard (défaut: 0.0.0.0)
+      DASHBOARD_HOST: ${DASHBOARD_HOST:-0.0.0.0}
+
+      # Nom de l'interface WireGuard (défaut: wg0)
+      WG_INTERFACE: ${WG_INTERFACE:-wg0}
+
+      # Chemin du fichier .conf WireGuard *dans le conteneur* (défaut: déduit de WG_INTERFACE)
+      # WG_CONFIG_FILE: /etc/wireguard/wg0.conf
+
+      # Activer les analytics SQLite (défaut: true)
+      ANALYTICS_ENABLED: ${ANALYTICS_ENABLED:-true}
+
+      # Fuseau horaire (défaut: UTC)
+      TZ: ${TZ:-UTC}
+
+      # Mode allégé — réduit la fréquence de rafraîchissement et les sondes réseau (défaut: false)
+      LIGHT_MODE: ${LIGHT_MODE:-false}
+
+      # Mode ultra-allégé — encore moins de travail UI + analytics (défaut: false)
+      ULTRA_LIGHT: ${ULTRA_LIGHT:-false}
+
+      # Niveau de log supervisord : debug | info | warn | error (défaut: info)
+      LOG_LEVEL: ${LOG_LEVEL:-info}
+
+      # Runtime interne : permet au dashboard d'utiliser supervisor au lieu de systemd
+      HomelinkWG_RUNTIME: docker
+
+# ── Named volumes ─────────────────────────────────────────────────────────────
+volumes:
+  homelinkwg_data:
+    driver: local

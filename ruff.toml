@@ -1,0 +1,7 @@
+[lint]
+extend-ignore = [
+    "E701",  # Multiple statements on one line (colon) — too many in existing code
+    "E702",  # Multiple statements on one line (semicolon) — too many in existing code
+    "E741",  # Ambiguous variable name — existing code uses 'l'
+    "F541",  # f-string without placeholders — used for formatting in existing code
+]
